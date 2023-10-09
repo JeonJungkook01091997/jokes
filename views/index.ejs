@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jokes you love to hear </title>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f0f0f0;">
+  <div style="width: 80%; max-width: 500px; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+    <h1 style="text-align: center; margin-bottom: 20px;">How would you like to laugh today? 😂😂😂😂</h1>
+
+    <form id="optionsForm">
+      <label for="kindofjoke" style="display: block;">Select Kind of Joke:</label>
+      <select id="kindofjoke" name="kindofjoke" style="display: block;">
+        <option value="Any">Any</option>
+        <option value="Misc">Misc</option>
+        <option value="Programming">Programming</option>
+        <option value="Dark">Dark</option>
+        <option value="Pun">Pun</option>
+        <option value="Spooky">Spooky</option>
+        <option value="Christmas">Christmas</option>
+      </select>
+
+      <label for="categoryFlags" style="display: block;">Select Category Flags:</label>
+      <input type="checkbox" id="nsfw" name="flags" value="nsfw">
+      <label for="nsfw">NSFW</label>
+      <input type="checkbox" id="religious" name="flags" value="religious">
+      <label for="religious">religious</label>
+      <input type="checkbox" id="political" name="flags" value="political">
+      <label for="political">Political</label>
+      <input type="checkbox" id="racist" name="flags" value="racist">
+      <label for="racist">Racist</label>
+      <input type="checkbox" id="sexist" name="flags" value="sexist">
+      <label for="sexist">Sexist</label>
+
+      <label for="responseFormat" style="display: flex; gap: 10px; gap: 10px 20px; row-gap: 10px; column-gap: 20px;">Select Response Format:</label>
+      <select id="responseFormat" name="responseFormat">
+        <option value="json">JSON</option>
+        <option value="xml">XML</option>
+        <option value="yaml">YAML</option>
+        <option value="txt">Plain Text</option>
+      </select>
+
+      <label for="jokeType" style="display: block;">Select Joke Type:</label>
+      <input type="radio" id="single" name="jokeType" value="single">
+      <label for="single">Single</label>
+      <input type="radio" id="twopart" name="jokeType" value="twopart">
+      <label for="twopart">Two Part</label>
+
+      <label for="jokeAmount" style="display: block;">Joke Amount:</label>
+      <input type="number" id="jokeAmount" name="jokeAmount" value="1" min="1" max="10">
+
+      <button type="button" id="submitButton">Submit</button>
+    </form>
+
+    <p style="text-align: center;">Generated URL: <span id="generatedUrl"></span></p>
+  </div>
+
+
+<!-- Add this code to your "index.ejs" file -->
+<!-- Modify the HTML structure to include a container for the jokes -->
+<div id="jokesContainer" style="margin-top: 20px;">
+  
+  <ul id="jokesList">
+    <!-- Jokes will be dynamically added here -->
+  </ul>
+</div>
+<!-- Modify the JavaScript code in your "index.ejs" file -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('optionsForm');
+    const submitButton = document.getElementById('submitButton');
+    const generatedUrl = document.getElementById('generatedUrl');
+
+    submitButton.addEventListener('click', async function() {
+      const formData = new FormData(form);
+
+      // Generate the URL
+      const baseUrl = 'https://v2.jokeapi.dev/joke/';
+      const kindofjoke = formData.get('kindofjoke');
+      const flags = formData.getAll('flags');
+      const responseFormat = formData.get('responseFormat');
+      const jokeType = formData.get('jokeType');
+      const jokeAmount = formData.get('jokeAmount');
+
+      const flagsParam = flags.length > 0 ? `blacklistFlags=${flags.join(',')}` : '';
+      const url = `${baseUrl}${kindofjoke}?${flagsParam}&format=${responseFormat}&type=${jokeType}&amount=${jokeAmount}`;
+
+      generatedUrl.textContent = url;
+
+      // Redirect to the generated URL
+      window.location.href = url; // This line will take the user to the generated URL
+    });
+  });
+</script>
+
+
+
+
+</body>
+</html>
